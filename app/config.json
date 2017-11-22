@@ -1,3 +1,0 @@
-{
-  "greetText": "配置webpack.config.js,webpack自动引用webpack.config.js文件中的配置选项,使用npm进行引导任务,使用webpack提供的本地服务器"
-}

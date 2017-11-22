@@ -9,6 +9,10 @@ module.exports = {
     path: __dirname + '/build',
     filename: 'bundle.js'
   },
+  externals: {
+    "react": "React",
+    "react-dom": "ReactDOM"
+  },
   devServer: {
     contentBase: './public',   //本地服务器所在页面目录
     historyApiFallback: true,//不跳转
