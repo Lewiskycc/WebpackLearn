@@ -2,6 +2,8 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const pxtorem = require('postcss-pxtorem');
+const autoprefixer = require('autoprefixer');
 
 module.exports = {
   entry: __dirname + "/app/main.js", //已多次提及的唯一入口文件
@@ -14,7 +16,8 @@ module.exports = {
     contentBase: "./public", //本地服务器所加载的页面所在的目录
     historyApiFallback: true, //不跳转
     inline: true,
-    hot: true
+    hot: true,
+    port: 9999
   },
   module: {
     rules: [{
@@ -33,7 +36,16 @@ module.exports = {
             modules: true
           }
         }, {
-          loader: "postcss-loader"
+          loader: "postcss-loader",
+            options: {
+              ident: 'postcss',
+              plugins: () => [
+                autoprefixer({
+                  browsers: ['last 2 versions', 'Firefox ESR', '> 1%', 'ie >= 8', 'iOS >= 8', 'Android >= 4'],
+                }),
+                pxtorem({ rootValue: 100, propWhiteList: [] })
+              ],
+            },
         }],
       })
     }]
@@ -41,7 +53,7 @@ module.exports = {
   plugins: [
     new webpack.BannerPlugin('版权所有，翻版必究'),
     new HtmlWebpackPlugin({
-      template: __dirname + "/app/index.tmpl.html" //new 一个这个插件的实例，并传入相关的参数
+      template: __dirname + "/public/index.html"//new 一个这个插件的实例，并传入相关的参数
     }),
     new webpack.HotModuleReplacementPlugin(), //热加载插件
     new webpack.optimize.OccurrenceOrderPlugin(),
