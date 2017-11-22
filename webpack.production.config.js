@@ -26,17 +26,43 @@ module.exports = {
         loader: "babel-loader"
       },
       exclude: /node_modules/
-    }, {
-      test: /\.css$/,
-      use: ExtractTextPlugin.extract({
-        fallback: "style-loader",
-        use: [{
-          loader: "css-loader",
-          options: {
-            modules: true
-          }
-        }, {
-          loader: "postcss-loader",
+    },{
+        test: /\.css$/,
+        use: [
+          require.resolve('style-loader'),
+          {
+            loader: require.resolve('css-loader'),
+            options: {
+              importLoaders: 1,
+            },
+          },
+          {
+            loader: require.resolve('postcss-loader'),
+            options: {
+              ident: 'postcss',
+              plugins: () => [
+                require('postcss-flexbugs-fixes'),
+                autoprefixer({
+                  browsers: [
+                    '>1%',
+                    'last 4 versions',
+                    'Firefox ESR',
+                    'not ie < 9',
+                  ],
+                  flexbox: 'no-2009',
+                }),
+              ],
+            },
+          },
+        ],
+      },
+            {
+        test: /\.less$/,
+        use: [
+          require.resolve('style-loader'),
+          require.resolve('css-loader'),
+          {
+            loader: require.resolve('postcss-loader'),
             options: {
               ident: 'postcss',
               plugins: () => [
@@ -46,9 +72,16 @@ module.exports = {
                 pxtorem({ rootValue: 100, propWhiteList: [] })
               ],
             },
-        }],
-      })
-    }]
+          },
+          {
+            loader: require.resolve('less-loader'),
+            options: {
+              modifyVars: { "@primary-color": "#1DA57A" },
+            },
+          },
+        ],
+      },
+    ]
   },
   plugins: [
     new webpack.BannerPlugin('版权所有，翻版必究'),

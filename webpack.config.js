@@ -31,15 +31,40 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
+          require.resolve('style-loader'),
           {
-            loader: "style-loader"
-          }, {
-            loader: "css-loader",
+            loader: require.resolve('css-loader'),
             options: {
-              modules: true, //模块化css 类名引入js 只对当前组件有效
-            }
-          },{
-            loader: "postcss-loader",
+              importLoaders: 1,
+            },
+          },
+          {
+            loader: require.resolve('postcss-loader'),
+            options: {
+              ident: 'postcss',
+              plugins: () => [
+                require('postcss-flexbugs-fixes'),
+                autoprefixer({
+                  browsers: [
+                    '>1%',
+                    'last 4 versions',
+                    'Firefox ESR',
+                    'not ie < 9',
+                  ],
+                  flexbox: 'no-2009',
+                }),
+              ],
+            },
+          },
+        ],
+      },
+            {
+        test: /\.less$/,
+        use: [
+          require.resolve('style-loader'),
+          require.resolve('css-loader'),
+          {
+            loader: require.resolve('postcss-loader'),
             options: {
               ident: 'postcss',
               plugins: () => [
@@ -49,9 +74,15 @@ module.exports = {
                 pxtorem({ rootValue: 100, propWhiteList: [] })
               ],
             },
-          }
-        ]
-      }
+          },
+          {
+            loader: require.resolve('less-loader'),
+            options: {
+              modifyVars: { "@primary-color": "#1DA57A" },
+            },
+          },
+        ],
+      },
     ]
   },
   plugins: [

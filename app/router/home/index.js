@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './index.css';
+import './index.less';
 
 
 class Home extends Component {
@@ -18,11 +18,14 @@ class Home extends Component {
     ]
     return (
       <div className="root">
-        {data.map((item, i) =>
-          <div onClick={() => this.handleClick(item.url)} key={i}>
-            <img src={item.url} />
-          </div>
-        )}
+        <div className="img-box">
+          {data.map((item, i) =>
+                <div onClick={() => this.handleClick(item.url)} key={i}>
+                  <img src={item.url} />
+                </div>
+           )}
+        </div>
+   
       </div>
     )
   }
